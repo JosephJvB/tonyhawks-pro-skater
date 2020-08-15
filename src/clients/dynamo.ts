@@ -2,6 +2,11 @@ import { DynamoDB } from 'aws-sdk';
 import { UserHistory } from '../models/interfaces';
 import User from '../models/user';
 
+enum DynamoMethods {
+  putItem = 'putItem',
+  getItem = 'getItem',
+}
+
 export default class Dynamo {
   client: DynamoDB;
   tableName = 'Users';
@@ -16,48 +21,36 @@ export default class Dynamo {
   async tryGetUserHistory(userId: string): Promise<UserHistory> {
     try {
       const params = {
-        Key: { id: { S: userId } }
+        Key: { id: { S: userId } },
+        TableName: this.tableName
       };
-      const data = await this.getDocument(params);
+      const data = await this.lesshgoo(
+        DynamoMethods.getItem,
+        params
+      );
       return data?.Item;
     } catch (e) {
       return null;
     }
   }
-  async getRegisteredUsers(): Promise<string[]> {
-    const params = {
-      Key: { id: { S: '__userList__' }}
-    };
-    const data = await this.getDocument(params);
-    return data?.Item?.history
-      ? JSON.parse(data.Item.history.S)
-      : []
-  }
-  updateUserHistory(userId: string, history: User[]) {
+  updateUserHistory(nextHistory: User[]) {
     const params = {
       Item: {
-        id: { S: userId },
-        history: { S: JSON.stringify(history) }
-      }
+        id: { S: nextHistory[0].id },
+        history: { S: JSON.stringify(nextHistory) }
+      },
+      TableName: this.tableName
     }
-    return this.writeDocument(params);
+    return this.lesshgoo(
+      DynamoMethods.putItem,
+      params
+    );
   }
-
-  getDocument(params: any): Promise<any> {
-    params.TableName = this.tableName;
-    params.ConsistentRead = true;
+  lesshgoo(method: DynamoMethods, params: any): Promise<any> {
     if(process.env.DEBUG) {
-      console.log('Dynamo.getDocument:');
+      console.log(`Dynamo.${method}:`);
       console.log(JSON.stringify(params, null, 2));
     }
-    return this.client.getItem(params).promise();
-  }
-  writeDocument(params: any): Promise<any> {
-    params.TableName = this.tableName;
-    if(process.env.DEBUG) {
-      console.log('Dynamo.writeDocument:');
-      console.log(JSON.stringify(params, null, 2));
-    }
-    return this.client.putItem(params).promise();
+    return (this.client[method] as Function)(params).promise();
   }
 }

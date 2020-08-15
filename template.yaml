@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  run on a schedule!
+  save data to db
 
 Transform:
 - AWS::Serverless-2016-10-31
@@ -10,27 +10,27 @@ Globals:
     Environment:
       Variables:
         DEBUG: true
-        BotToken: '{{resolve:ssm:BotToken:1}}'
         AccessKey: '{{resolve:ssm:AccessKey:1}}'
         SecretKey: '{{resolve:ssm:SecretKey:1}}'
 
 Resources:
-  GetUserUpdates:
+  SaveUserHistory:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: dist/
       Handler: function.handler
       Runtime: nodejs12.x
       Events:
-        ScheduledEvent:
-          Type: Schedule
+        SaveUserHistory:
+          Type: Api
           Properties:
-            Schedule: rate(1 minute)
-      Role: arn:aws:iam::396046420680:role/lambda_sqs
-      Policies:
-        - AWSLambdaBasicExecutionRole
+            Path: /save
+            Method: post
+      Role: arn:aws:iam::355151872526:role/joeslambda
+      # Policies:
+      #   - AWSLambdaBasicExecutionRole
 
 Outputs:
-  GetUserUpdates:
-    Description: getuserupdates scheduled lambda 
-    Value: !GetAtt GetUserUpdates.Arn
+  SaveUserHistory:
+    Description: save data to db
+    Value: !GetAtt SaveUserHistory.Arn

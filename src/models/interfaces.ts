@@ -1,4 +1,3 @@
-import Discord from "../clients/discord";
 import Dynamo from "../clients/dynamo";
 
 interface DynamoString {
@@ -9,6 +8,5 @@ export interface UserHistory {
   history: DynamoString;
 }
 export interface Clients {
-  discord?: Discord;
   dynamo?: Dynamo;
 }

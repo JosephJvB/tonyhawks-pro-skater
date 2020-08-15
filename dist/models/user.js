@@ -2,17 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class User {
     constructor(data) {
-        this.id = data.id;
-        this.nickname = data.nickname;
-        this.avatar = data.avatar;
-        this.timestamp = data.timestamp || Date.now().toString();
-    }
-    hasChanged(data) {
-        const hasChanged = [
-            this.nickname === data.nickname,
-            this.avatar === data.avatar,
-        ].includes(false);
-        return hasChanged;
+        const userData = data;
+        this.id = userData.id;
+        this.avatar = userData.avatar;
+        this.timestamp = Date.now().toString();
     }
 }
 exports.default = User;

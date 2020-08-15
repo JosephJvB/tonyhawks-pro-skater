@@ -1,14 +1,24 @@
+import {
+  APIGatewayProxyResult,
+  APIGatewayProxyEvent,
+} from 'aws-lambda';
+
 import Dynamo from "./clients/dynamo"
-import Discord from "./clients/discord"
 import TimelineService from "./services/timeline"
 
-export const handler = async (): Promise<void> => {
+export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  if(process.env.DEBUG) {
+    console.log('EVENT:', event.body)
+  }
   const clients = {
     dynamo: new Dynamo(),
-    discord: new Discord(),
-  }
-
+  };
+  
   const service = new TimelineService(clients);
-  await service.handleScheduledEvent();
-  return;
+  const eventData = JSON.parse(event.body)
+  const success = await service.saveUserHistory(eventData);
+  
+  return {
+    statusCode: success ? 200 : 500,
+  } as APIGatewayProxyResult;
 }

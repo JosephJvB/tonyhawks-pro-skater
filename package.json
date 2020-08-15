@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "tsc",
-    "deploy": "sam deploy --region us-west-2 --stack-name timeline --s3-bucket BUCKET --s3-prefix timeline --capabilities CAPABILITY_IAM --no-fail-on-empty-changeset --confirm-changeset -g",
+    "deploy": "npm run build && sam deploy --region us-west-2 --stack-name user-history --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-l2o91ywj1vt8 --s3-prefix user-history --capabilities CAPABILITY_IAM --no-fail-on-empty-changeset --confirm-changeset",
     "test": "npm run build && node test/timeline.test.js"
   },
   "dependencies": {
