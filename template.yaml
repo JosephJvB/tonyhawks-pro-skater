@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  run on a schedule!
+
+Transform:
+- AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Environment:
+      Variables:
+        DEBUG: true
+        BotToken: '{{resolve:ssm:BotToken:1}}'
+        AccessKey: '{{resolve:ssm:AccessKey:1}}'
+        SecretKey: '{{resolve:ssm:SecretKey:1}}'
+
+Resources:
+  GetUserUpdates:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/
+      Handler: function.handler
+      Runtime: nodejs12.x
+      Events:
+        ScheduledEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 minute)
+      Role: arn:aws:iam::396046420680:role/lambda_sqs
+      Policies:
+        - AWSLambdaBasicExecutionRole
+
+Outputs:
+  GetUserUpdates:
+    Description: getuserupdates scheduled lambda 
+    Value: !GetAtt GetUserUpdates.Arn
