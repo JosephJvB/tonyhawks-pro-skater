@@ -14,12 +14,9 @@ export default class TimelineService {
       console.log('timelineService.saveUserHistory: invoked');
       const nextUser = new User(eventData.user);
       const dynamoRecord = await this.dynamo.tryGetUserHistory(nextUser.id);
-      if(!dynamoRecord) {
-        console.warn('No user record for ', nextUser.id, 'fallback to create');
-        await this.dynamo.updateUserHistory([nextUser]);
-        return true;
-      }
-      const userHistory = JSON.parse(dynamoRecord.history.S);
+      const userHistory = dynamoRecord 
+       ? JSON.parse(dynamoRecord.history.S)
+       : [];
       userHistory.push(nextUser);
       await this.dynamo.updateUserHistory(userHistory);
       console.log('timelineService.saveUserHistory: success');
