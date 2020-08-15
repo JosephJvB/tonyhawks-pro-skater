@@ -18,7 +18,7 @@ class Dynamo {
     async tryGetUserHistory(userId) {
         try {
             const params = {
-                Key: { id: { S: userId } },
+                Key: { id: { S: userId.toString() } },
                 TableName: this.tableName
             };
             const data = await this.lesshgoo(DynamoMethods.getItem, params);
@@ -31,7 +31,7 @@ class Dynamo {
     updateUserHistory(nextHistory) {
         const params = {
             Item: {
-                id: { S: nextHistory[0].id },
+                id: { S: nextHistory[0].id.toString() },
                 history: { S: JSON.stringify(nextHistory) }
             },
             TableName: this.tableName
