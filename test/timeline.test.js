@@ -6,9 +6,11 @@ process.env.AWS_REGION = 'us-west-2'
 process.env.DEBUG = true
 const fn = require('../dist/function')
 fn.handler({
-  user: {
-    id: 'testid',
-    avatar: 'testavatar',
-    nickname: 'testname'
-  }
+  body: JSON.stringify({
+    user: {
+      id: 'testid',
+      avatar: 'testavatar',
+      nickname: 'testname'
+    }
+  })
 })

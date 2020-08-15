@@ -11,5 +11,5 @@ axios({
     }
   }
 })
-.then(console.log)
+.then(r => console.log(r.status))
 .catch(console.log)
