@@ -21,7 +21,7 @@ export default class Dynamo {
   async tryGetUserHistory(userId: string): Promise<UserHistory> {
     try {
       const params = {
-        Key: { id: { S: userId } },
+        Key: { id: { S: userId.toString() } },
         TableName: this.tableName
       };
       const data = await this.lesshgoo(
@@ -36,7 +36,7 @@ export default class Dynamo {
   updateUserHistory(nextHistory: User[]) {
     const params = {
       Item: {
-        id: { S: nextHistory[0].id },
+        id: { S: nextHistory[0].id.toString() },
         history: { S: JSON.stringify(nextHistory) }
       },
       TableName: this.tableName
