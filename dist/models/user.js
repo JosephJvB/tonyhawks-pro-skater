@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class User {
-    constructor(data) {
-        const userData = data;
+    constructor(userData) {
         this.id = userData.id;
         this.avatar = userData.avatar;
         this.timestamp = Date.now().toString();

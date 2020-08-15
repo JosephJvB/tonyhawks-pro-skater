@@ -4,8 +4,7 @@ export default class User {
   avatar: string;
   timestamp: string;
 
-  constructor(data: any) {
-    const userData = data as User;
+  constructor(userData: User) {
     this.id = userData.id;
     this.avatar = userData.avatar;
     this.timestamp = Date.now().toString();

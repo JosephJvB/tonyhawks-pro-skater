@@ -9,10 +9,10 @@ export default class TimelineService {
     this.dynamo = clients.dynamo;
   }
 
-  async saveUserHistory(eventData: User): Promise<boolean> {
+  async saveUserHistory(eventData: { user: User }): Promise<boolean> {
     try {
       console.log('timelineService.saveUserHistory: invoked');
-      const nextUser = new User(eventData);
+      const nextUser = new User(eventData.user);
       const dynamoRecord = await this.dynamo.tryGetUserHistory(nextUser.id);
       if(!dynamoRecord) {
         console.warn('No user record for ', nextUser.id, 'fallback to create');
