@@ -7,6 +7,7 @@ export default class User {
   constructor(userData: User) {
     this.id = userData.id;
     this.avatar = userData.avatar;
+    this.nickname = userData.nickname;
     this.timestamp = Date.now().toString();
   }
 }
