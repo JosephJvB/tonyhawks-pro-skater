@@ -18,7 +18,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: dist/
-      Handler: function.handler
+      Handler: history.handler
       Runtime: nodejs12.x
       Events:
         SaveUserHistory:
@@ -29,6 +29,21 @@ Resources:
       Role: arn:aws:iam::355151872526:role/joeslambda
       # Policies:
       #   - AWSLambdaBasicExecutionRole
+  # MontageRoulette:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     CodeUri: dist/
+  #     Handler: roulette.handler
+  #     Runtime: nodejs12.x
+  #     Events:
+  #       MontageRoulette:
+  #         Type: Api
+  #         Properties:
+  #           Path: /roll
+  #           Method: post
+  #     Role: arn:aws:iam::355151872526:role/joeslambda
+  #     # Policies:
+  #     #   - AWSLambdaBasicExecutionRole
 
 Outputs:
   SaveUserHistory:

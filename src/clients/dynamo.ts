@@ -9,7 +9,7 @@ enum DynamoMethods {
 
 export default class Dynamo {
   client: DynamoDB;
-  tableName = 'Users';
+  tableName: 'Users';
   constructor() {
     this.client = new DynamoDB({
       region: process.env.AWS_REGION,
