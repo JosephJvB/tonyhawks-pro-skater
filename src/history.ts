@@ -1,6 +1,7 @@
 import {
   APIGatewayProxyResult,
   APIGatewayProxyEvent,
+  SQSEvent
 } from 'aws-lambda';
 
 import Dynamo from "./clients/dynamo"
